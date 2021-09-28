@@ -2,6 +2,10 @@ require("dotenv").config();
 require("./config/connect")();
 const express = require("express");
 const app = express();
+const cors = require("cors");
+
+// Allow cross-origin requests
+app.use(cors());
 
 const schema = require("./schema/schema");
 
@@ -11,7 +15,6 @@ app.use("/graphql", graphqlHTTP({
     schema,
     graphiql: true
 }));
-
 
 
 const PORT = process.env.PORT || 8000;
