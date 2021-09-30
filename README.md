@@ -18,7 +18,7 @@ npm run dev
 
 
 ```
-Visit http://localhost:8000/graphql to make queries
+Visit http://localhost:3000/ to use it
 ```
 ### Author
 
