@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from "@apollo/client";
-import { getBooksQuery } from "../queries/query";
+import { GET_BOOKLIST_QUERY } from "../queries/query";
+import BookDetail from './BookDetail';
 
 
 function BookList() {
 
 
-    const { loading, error, data } = useQuery(getBooksQuery);
+    const [bookId, setBookID] = useState("");
+
+    const { loading, error, data } = useQuery(GET_BOOKLIST_QUERY);
 
 
     const displayData = () => {
@@ -18,7 +21,7 @@ function BookList() {
         }
         return data.books.map(book => {
             return (
-                <li key={book.id}>
+                <li key={book.id} onClick={e => { setBookID(book.id) }}>
                     {book.name}
                 </li>
             )
@@ -30,6 +33,7 @@ function BookList() {
             <ul id="book-list">
                 {displayData()}
             </ul>
+            <BookDetail bookId={bookId} />
         </div>
     )
 }

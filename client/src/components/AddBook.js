@@ -1,16 +1,16 @@
 import React, { Fragment, useState } from 'react'
 import { useMutation, useQuery } from "@apollo/client";
-import { getAuthorsQuery, addBookMutation } from "../queries/query";
+import { GET_AUTHORS_QUERY, GET_BOOKLIST_QUERY, ADD_BOOK_MUTATION } from "../queries/query";
 
 
-function AddBook() {
+function AddBookComponent() {
 
     const [bookName, setBookName] = useState("");
     const [genre, setGenre] = useState("");
     const [author, setAuthor] = useState("");
 
 
-    const { loading, error, data } = useQuery(getAuthorsQuery);
+    let { loading, error, data } = useQuery(GET_AUTHORS_QUERY);
 
     const displayAuthors = () => {
         if (loading) {
@@ -30,17 +30,24 @@ function AddBook() {
 
 
 
-
+    let [addBook] = useMutation(ADD_BOOK_MUTATION);
     const SubmitForm = (e) => {
         e.preventDefault();
-        const [data] = useMutation(addBookMutation, {
+        addBook({
             variables: {
                 name: bookName,
                 genre: genre,
                 authorId: author
-            }
-        })
-        console.log(data)
+            },
+            refetchQueries: [
+                {
+                    query: GET_BOOKLIST_QUERY
+                }
+            ]
+        });
+        setBookName("");
+        setGenre("");
+        setAuthor("");
     }
 
     return (
@@ -67,4 +74,4 @@ function AddBook() {
     )
 }
 
-export default AddBook
+export default AddBookComponent
